@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="280" viewBox="0 0 960 280" role="img" aria-labelledby="title desc">
+  <title id="title">Muhammad Zaky</title>
+  <desc id="desc">Code. Learn. Build. A dark developer banner with blue and mint circuit accents.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101e36"/><stop offset="1" stop-color="#0d1117"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#58a6ff"/><stop offset="1" stop-color="#56e0b5"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#58a6ff" stroke-opacity=".07"/></pattern>
+  </defs>
+  <rect width="960" height="280" rx="18" fill="url(#bg)"/>
+  <rect width="960" height="280" rx="18" fill="url(#grid)"/>
+  <g fill="none" stroke="url(#accent)" stroke-width="2" opacity=".45">
+    <path d="M690 0v40l45 45h225M790 0v25l40 40h130M960 210H845l-35 35H650M960 235h-90l-35 35"/>
+    <circle cx="735" cy="85" r="5"/><circle cx="830" cy="65" r="5"/><circle cx="650" cy="245" r="5"/>
+  </g>
+  <rect x="48" y="49" width="190" height="27" rx="13" fill="#58a6ff" fill-opacity=".12"/>
+  <text x="64" y="67" font-family="monospace" font-size="12" letter-spacing="2" fill="#79c0ff">HELLO, WORLD /&gt;</text>
+  <text x="46" y="139" font-family="Segoe UI,Arial,sans-serif" font-size="51" font-weight="700" fill="#f0f6fc">Muhammad Zaky<tspan fill="#56e0b5">.</tspan></text>
+  <text x="49" y="178" font-family="Segoe UI,Arial,sans-serif" font-size="21" fill="#b1c4da">Code. Learn. Build.</text>
+  <text x="49" y="231" font-family="monospace" font-size="13" fill="#79c0ff">@zaakyyz <tspan fill="#8b949e"> / Semarang, Indonesia</tspan></text>
+  <g transform="translate(728 112)" fill="none" stroke="url(#accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M25 0L0 25l25 25M95 0l25 25-25 25M73-9L48 59"/></g>
+  <rect y="276" x="18" width="924" height="3" rx="1.5" fill="url(#accent)"/>
+</svg>
