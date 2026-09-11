@@ -4,7 +4,7 @@
 
 <h1 align="center">Hi there, I'm Zaky</h1>
 <p align="center">
-  <b>Informatics Engineering student building mobile and web products.</b><br />
+  <b>Associate Degree graduate in Informatics Engineering building mobile and web products.</b><br />
   Politeknik Negeri Semarang · Semarang, Indonesia
 </p>
 
@@ -17,7 +17,7 @@
 
 I'm **Muhammad Zaky**, based in **Semarang, Indonesia**.
 
-- Studying **Informatics Engineering** at **Politeknik Negeri Semarang**.
+- Earned an **Associate Degree in Informatics Engineering** from **Politeknik Negeri Semarang**.
 - Building mobile applications with **Flutter**, **Dart**, and API-driven architecture.
 - Working with **Laravel**, REST APIs, realtime communication, Firebase, and MySQL.
 - Also exploring **Python, image processing, and computer vision** through independent projects.
