@@ -2,7 +2,7 @@
   <img src="assets/banner.svg" width="100%" alt="Muhammad Zaky — Code. Learn. Build." />
 </p>
 
-<h1 align="center">Hi there, I'm Zaky 👋</h1>
+<h1 align="center">Hi there, I'm Zaky</h1>
 <p align="center">
   <b>Informatics Engineering student building mobile and web products.</b><br />
   Politeknik Negeri Semarang · Semarang, Indonesia
@@ -13,23 +13,23 @@
   <a href="https://github.com/zaakyyz?tab=followers"><img src="https://img.shields.io/github/followers/zaakyyz?style=for-the-badge&amp;label=Followers&amp;color=58A6FF&amp;labelColor=161B22" alt="GitHub followers" /></a>
 </p>
 
-## 👨‍💻 About me
+## About me
 
 I'm **Muhammad Zaky**, based in **Semarang, Indonesia**.
 
-- 🎓 Studying **Informatics Engineering** at **Politeknik Negeri Semarang**.
-- 📱 Building mobile applications with **Flutter**, **Dart**, and API-driven architecture.
-- ⚙️ Working with **Laravel**, REST APIs, realtime communication, Firebase, and MySQL.
-- 🔍 Also exploring **Python, image processing, and computer vision** through independent projects.
-- 🤝 Comfortable working in a team through feature branches, reviews, testing, and iterative delivery.
+- Studying **Informatics Engineering** at **Politeknik Negeri Semarang**.
+- Building mobile applications with **Flutter**, **Dart**, and API-driven architecture.
+- Working with **Laravel**, REST APIs, realtime communication, Firebase, and MySQL.
+- Also exploring **Python, image processing, and computer vision** through independent projects.
+- Comfortable working in a team through feature branches, reviews, testing, and iterative delivery.
 
-## 🧰 Technologies I explore
+## Technologies I explore
 
 <p align="center">
   <img src="https://skillicons.dev/icons?i=flutter,dart,laravel,php,mysql,firebase,python,opencv,git,github&amp;perline=10" alt="Flutter, Dart, Laravel, PHP, MySQL, Firebase, Python, OpenCV, Git, GitHub" />
 </p>
 
-## 🚀 Featured collaborative project
+## Featured collaborative project
 
 ### BangDeliv — location-based delivery platform
 
@@ -42,7 +42,7 @@ BangDeliv is a collaborative final project for delivery services across Salatiga
 
 <sub>Developed collaboratively with [HassanZayyan](https://github.com/HassanZayyan). The linked repositories are public forks that preserve the original project history and contribution attribution.</sub>
 
-## 🧪 Independent projects
+## Independent projects
 
 | Project | What you'll find |
 | :--- | :--- |
@@ -51,7 +51,7 @@ BangDeliv is a collaborative final project for delivery services across Salatiga
 
 <p align="right"><a href="https://github.com/zaakyyz?tab=repositories">See all public repositories →</a></p>
 
-## 📊 GitHub at a glance
+## GitHub at a glance
 
 <p align="center">
   <img src="assets/stats.svg" width="100%" alt="GitHub statistics: public repositories, stars, followers, and contributions" />
