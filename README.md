@@ -42,15 +42,6 @@ BangDeliv is a collaborative final project for delivery services across Salatiga
 
 <sub>Developed collaboratively with [HassanZayyan](https://github.com/HassanZayyan). The linked repositories are public forks that preserve the original project history and contribution attribution.</sub>
 
-## Independent projects
-
-| Project | What you'll find |
-| :--- | :--- |
-| [**QR Code & Barcode Detector**](https://github.com/zaakyyz/QRCode-Barcode-Detector) | Real-time webcam detection and code validation with Python, OpenCV, and pyzbar. |
-| [**Pengolahan Citra**](https://github.com/zaakyyz/Pengolahan-Citra) | Image-processing experiments in Jupyter notebooks. |
-
-<p align="right"><a href="https://github.com/zaakyyz?tab=repositories">See all public repositories →</a></p>
-
 ## GitHub at a glance
 
 <p align="center">
@@ -63,7 +54,7 @@ BangDeliv is a collaborative final project for delivery services across Salatiga
   <img src="assets/activity.svg" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
-<sub>Updated daily with GitHub Actions. Repository and language statistics use public, non-fork repositories (excluding this profile), while the contribution calendar includes GitHub's visible activity. Forks are presented separately above to keep collaborative and independent work clear. Language share measures code size, not proficiency.</sub>
+<sub>Updated daily with GitHub Actions. Repository and language statistics use public, non-fork repositories (excluding this profile), while the contribution calendar includes GitHub's visible activity. Language share measures code size, not proficiency.</sub>
 
 ---
 
