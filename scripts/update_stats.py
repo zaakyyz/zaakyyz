@@ -49,6 +49,8 @@ def card(title, height, body, subtitle):
 
 
 def generate():
+    user = api(f"users/{USERNAME}")
+    member_since = datetime.strptime(user["created_at"][:10], "%Y-%m-%d").strftime("%d %b %Y")
     repos = []
     page = 1
     while True:
@@ -61,11 +63,11 @@ def generate():
       contributionCalendar{totalContributions weeks{contributionDays{date contributionCount weekday}}}
     }}}"""
     calendar = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-    since = datetime.strptime(calendar["weeks"][0]["contributionDays"][0]["date"], "%Y-%m-%d").strftime("%d %b %Y")
     stamp = datetime.now(timezone.utc).strftime("%d %b %Y · UTC")
     body = (
-        f'<text x="480" y="145" text-anchor="middle" font-size="64" fill="#58a6ff" font-weight="700">{calendar["totalContributions"]:,}</text>'
-        f'<text x="480" y="178" text-anchor="middle" font-size="17" fill="#c9d1d9">Contributions since {since}</text>'
+        f'<text x="480" y="137" text-anchor="middle" font-size="58" fill="#58a6ff" font-weight="700">{calendar["totalContributions"]:,}</text>'
+        '<text x="480" y="164" text-anchor="middle" font-size="16" fill="#c9d1d9">Contributions in the last year</text>'
+        f'<text x="480" y="190" text-anchor="middle" font-size="14" fill="#8b949e">GitHub member since {member_since}</text>'
     )
     stats = card("GitHub contributions", 211, body, f"@{USERNAME} · Updated {stamp}")
 
