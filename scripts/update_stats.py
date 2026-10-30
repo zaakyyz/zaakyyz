@@ -60,6 +60,7 @@ def generate():
       contributionCalendar{totalContributions weeks{contributionDays{date contributionCount weekday}}}
     }}}"""
     calendar = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+    since = datetime.strptime(calendar["weeks"][0]["contributionDays"][0]["date"], "%Y-%m-%d").strftime("%d %b %Y")
     stamp = datetime.now(timezone.utc).strftime("%d %b %Y · UTC")
     metrics = [(len(repos), "Public original repos"), (sum(r["stargazers_count"] for r in repos), "Stars earned"), (user["followers"], "Followers"), (calendar["totalContributions"], "Contributions / year")]
     body = ""
@@ -67,6 +68,8 @@ def generate():
         x = 30 + i * 232
         body += f'<rect x="{x}" y="86" width="204" height="101" rx="10" fill="#161b22"/>'
         body += text(x + 17, 132, f"{value:,}", 32, COLORS[i], 700) + text(x + 17, 163, label, 13)
+        if i == 3:
+            body += text(x + 17, 181, f"Since {since}", 11)
     stats = card("GitHub statistics", 211, body, f"@{USERNAME} · Updated {stamp}")
 
     languages = Counter()
