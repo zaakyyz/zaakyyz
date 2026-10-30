@@ -54,7 +54,7 @@ BangDeliv is a collaborative final project for delivery services across Salatiga
   <img src="assets/activity.svg" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
-<sub>Updated daily with GitHub Actions. Repository and language statistics use public, non-fork repositories (excluding this profile), while the contribution calendar includes GitHub's visible activity. Language share measures code size, not proficiency.</sub>
+<sub>Updated hourly with GitHub Actions. Repository and language statistics use public, non-fork repositories (excluding this profile), while the contribution calendar includes GitHub's visible activity. Language share measures code size, not proficiency.</sub>
 
 ---
 
