@@ -36,8 +36,6 @@ I'm **Muhammad Zaky**, based in **Semarang, Indonesia**.
   <img src="assets/activity.svg?v=585d65a5edfa" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
-<sub>Updated hourly with GitHub Actions. Language shares use code size in public, non-fork repositories (excluding this profile), while contributions follow GitHub's visible activity.</sub>
-
 ---
 
 <p align="center"><b>Thanks for stopping by!</b><br /><sub>Code. Learn. Build. Repeat.</sub></p>
