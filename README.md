@@ -8,10 +8,6 @@
   Politeknik Negeri Semarang · Semarang, Indonesia
 </p>
 
-<p align="center">
-  <a href="https://github.com/zaakyyz?tab=followers"><img src="https://img.shields.io/github/followers/zaakyyz?style=for-the-badge&amp;label=Followers&amp;color=58A6FF&amp;labelColor=161B22" alt="GitHub followers" /></a>
-</p>
-
 ## About me
 
 I'm **Muhammad Zaky**, based in **Semarang, Indonesia**.
