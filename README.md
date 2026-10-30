@@ -4,24 +4,18 @@
 
 <h1 align="center">Hi there, I'm Zaky</h1>
 <p align="center">
-  <b>Associate Degree graduate in Informatics Engineering building mobile and web products.</b><br />
+  <b>Informatics Engineering graduate building mobile and web applications.</b><br />
   Politeknik Negeri Semarang · Semarang, Indonesia
 </p>
 
 ## About me
 
-I'm **Muhammad Zaky**, based in **Semarang, Indonesia**.
+I build mobile apps with **Flutter** and **Dart**, web interfaces with **React**, **Next.js**, and **TypeScript**, and APIs with **Laravel**. I also explore **Python** and computer vision.
 
-- Earned an **Associate Degree in Informatics Engineering** from **Politeknik Negeri Semarang**.
-- Building mobile applications with **Flutter**, **Dart**, and API-driven architecture.
-- Working with **Laravel**, REST APIs, realtime communication, Firebase, and MySQL.
-- Also exploring **Python, image processing, and computer vision**.
-- Comfortable working in a team through feature branches, reviews, testing, and iterative delivery.
-
-## Technologies I explore
+## Tech stack
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=flutter,dart,laravel,php,mysql,firebase,python,opencv,git,github&amp;perline=10" alt="Flutter, Dart, Laravel, PHP, MySQL, Firebase, Python, OpenCV, Git, GitHub" />
+  <img src="https://skillicons.dev/icons?i=flutter,dart,laravel,php,mysql,ts,react,nextjs,python,opencv&amp;perline=10" alt="Flutter, Dart, Laravel, PHP, MySQL, TypeScript, React, Next.js, Python, OpenCV" />
 </p>
 
 ## GitHub at a glance
