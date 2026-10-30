@@ -27,16 +27,8 @@ I'm **Muhammad Zaky**, based in **Semarang, Indonesia**.
 ## GitHub at a glance
 
 <p align="center">
-  <img src="assets/stats.svg?v=4d58bd0519bf" width="100%" alt="GitHub statistics: public repositories, stars, followers, and contributions" />
+  <img src="assets/stats.svg?v=156a9831b874" width="100%" alt="GitHub contributions and start date" />
 </p>
-<p align="center">
-  <img src="assets/languages.svg?v=f4af02546017" width="100%" alt="Languages by code size across public, non-fork repositories" />
-</p>
-<p align="center">
-  <img src="assets/activity.svg?v=f7fd408307b0" width="100%" alt="GitHub contribution calendar over the last year" />
-</p>
-
-<sub>Updated hourly with GitHub Actions. Repository and language statistics use public, non-fork repositories (excluding this profile), while the contribution calendar includes GitHub's visible activity. Language share measures code size, not proficiency.</sub>
 
 ---
 
