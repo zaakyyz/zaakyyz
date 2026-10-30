@@ -2,9 +2,11 @@
 
 import json
 import os
+import re
 import subprocess
 from collections import Counter
 from datetime import datetime, timezone
+from hashlib import sha256
 from html import escape
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -117,8 +119,19 @@ def generate():
     activity = card("A year of building", 282, body, f"GitHub contribution calendar · Updated {stamp}")
     ASSETS.mkdir(exist_ok=True)
     # Fetch all data successfully before replacing any existing card.
-    for name, content in [("stats.svg", stats), ("languages.svg", language_svg), ("activity.svg", activity)]:
+    cards = [("stats.svg", stats), ("languages.svg", language_svg), ("activity.svg", activity)]
+    for name, content in cards:
         (ASSETS / name).write_text(content, encoding="utf-8")
+    readme_path = ASSETS.parent / "README.md"
+    readme = readme_path.read_text(encoding="utf-8")
+    for name, content in cards:
+        version = sha256(content.encode("utf-8")).hexdigest()[:12]
+        pattern = rf"assets/{re.escape(name)}(?:\?v=[0-9a-f]{{12}})?"
+        readme, matches = re.subn(pattern, f"assets/{name}?v={version}", readme)
+        if matches != 1:
+            raise RuntimeError(f"Expected one README image reference for {name}, found {matches}")
+    if readme != readme_path.read_text(encoding="utf-8"):
+        readme_path.write_text(readme, encoding="utf-8")
     print(f"Updated 3 cards: {len(repos)} public original repos, {len(languages)} languages.")
 
 
