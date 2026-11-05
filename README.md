@@ -25,13 +25,13 @@
 ## GitHub at a glance
 
 <p align="center">
-  <img src="assets/stats.svg?v=1054bab1cfcc" width="100%" alt="Contributions in the last year and GitHub account creation date" />
+  <img src="assets/stats.svg?v=1ee4c5eb539a" width="100%" alt="Contributions in the last year and GitHub account creation date" />
 </p>
 <p align="center">
   <img src="assets/languages.svg?v=f4af02546017" width="100%" alt="Languages by code size across public, non-fork repositories" />
 </p>
 <p align="center">
-  <img src="assets/activity.svg?v=d3f55dab3188" width="100%" alt="GitHub contribution calendar over the last year" />
+  <img src="assets/activity.svg?v=e91e97722999" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
 ---
