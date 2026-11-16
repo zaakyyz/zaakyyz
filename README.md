@@ -35,7 +35,7 @@
 ## GitHub Activity
 
 <p align="center">
-  <img src="assets/activity.svg?v=e1fcf4a5fb2b" width="100%" alt="GitHub contribution calendar over the last year" />
+  <img src="assets/activity.svg?v=24a14b45967d" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
 ---
