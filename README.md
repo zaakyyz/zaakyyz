@@ -26,7 +26,7 @@
 ## 📊 GitHub Stats
 
 <p align="center">
-  <img src="assets/stats.svg?v=51916efd0eb6" width="100%" alt="GitHub stats showing contributions and streaks" />
+  <img src="assets/stats.svg?v=a9b9cf6c81ac" width="100%" alt="GitHub stats showing contributions and streaks" />
 </p>
 <p align="center">
   <img src="assets/languages.svg?v=f4af02546017" width="100%" alt="Languages by code size across public, non-fork repositories" />
@@ -35,7 +35,7 @@
 ## 📈 GitHub Activity
 
 <p align="center">
-  <img src="assets/activity.svg?v=51bb5988e0e9" width="100%" alt="GitHub contribution calendar over the last year" />
+  <img src="assets/activity.svg?v=d1e0ba023331" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
 ---
