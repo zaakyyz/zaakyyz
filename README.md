@@ -32,12 +32,6 @@
   <img src="assets/languages.svg?v=f4af02546017" width="100%" alt="Languages by code size across public, non-fork repositories" />
 </p>
 
-## GitHub Activity
-
-<p align="center">
-  <img src="assets/activity.svg?v=24a14b45967d" width="100%" alt="GitHub contribution calendar over the last year" />
-</p>
-
 ---
 
 <p align="center"><b>Thanks for stopping by!</b><br /><sub>Code. Learn. Build. Repeat.</sub></p>

@@ -1,11 +1,10 @@
-"""Generate the self-contained language and activity SVGs for the profile."""
+"""Generate the self-contained language SVG for the profile."""
 
 import json
 import os
 import re
 import subprocess
 from collections import Counter
-from datetime import datetime, timezone
 from hashlib import sha256
 from html import escape
 from pathlib import Path
@@ -58,12 +57,6 @@ def generate():
             break
         page += 1
 
-    query = """query($login:String!){user(login:$login){contributionsCollection{
-      contributionCalendar{totalContributions weeks{contributionDays{date contributionCount weekday}}}
-    }}}"""
-    calendar = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-    stamp = datetime.now(timezone.utc).strftime("%d %b %Y · UTC")
-
     languages = Counter()
     for repo in repos:
         languages.update(api(f"repos/{USERNAME}/{repo['name']}/languages"))
@@ -84,33 +77,8 @@ def generate():
         body += text(30, 125, "No public language data yet.")
     language_svg = card("Languages in my repositories", 205, body, "Share of code bytes · Public original repositories · Profile repository excluded")
 
-    weeks = calendar["weeks"]
-    body = ""
-    step = min(16, 850 / max(len(weeks), 1))
-    last_month = None
-    for col, week in enumerate(weeks):
-        for day in week["contributionDays"]:
-            count = day["contributionCount"]
-            fill = "#161b22" if count == 0 else ("#0e4429" if count < 3 else "#006d32" if count < 6 else "#26a641" if count < 10 else "#39d353")
-            x, y = 62 + col * step, 108 + day["weekday"] * 17
-            body += f'<rect x="{x:.2f}" y="{y}" width="{step-3:.2f}" height="13" rx="3" fill="{fill}"><title>{day["date"]}: {count} contributions</title></rect>'
-        first = week["contributionDays"][0]["date"]
-        month = first[:7]
-        if month != last_month and col < len(weeks) - 2:
-            body += text(62 + col * step, 94, datetime.strptime(first, "%Y-%m-%d").strftime("%b"), 11)
-            last_month = month
-    for row, label in [(1, "Mon"), (3, "Wed"), (5, "Fri")]:
-        body += text(29, 119 + row * 17, label, 10)
-    body += text(30, 256, f"{calendar['totalContributions']:,} contributions in the last year", 13, "#c9d1d9")
-    body += text(744, 256, "Less", 11)
-    for i, fill in enumerate(["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]):
-        body += f'<rect x="{776+i*18}" y="246" width="13" height="13" rx="3" fill="{fill}"/>'
-    body += text(873, 256, "More", 11)
-    activity = card("GitHub Activity", 282, body, f"GitHub contribution calendar · Updated {stamp}")
-
     ASSETS.mkdir(exist_ok=True)
-    # Fetch all data successfully before replacing any existing card.
-    cards = [("languages.svg", language_svg), ("activity.svg", activity)]
+    cards = [("languages.svg", language_svg)]
     for name, content in cards:
         (ASSETS / name).write_text(content, encoding="utf-8")
     readme_path = ASSETS.parent / "README.md"
@@ -123,7 +91,7 @@ def generate():
             raise RuntimeError(f"Expected one README image reference for {name}, found {matches}")
     if readme != readme_path.read_text(encoding="utf-8"):
         readme_path.write_text(readme, encoding="utf-8")
-    print(f"Updated 2 cards: {len(repos)} public original repos, {len(languages)} languages.")
+    print(f"Updated language card: {len(repos)} public original repos, {len(languages)} languages.")
 
 
 if __name__ == "__main__":
