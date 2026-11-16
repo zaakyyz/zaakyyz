@@ -78,12 +78,37 @@ def generate():
         }})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
         all_time_total += yearly["totalContributions"]
     stamp = now.strftime("%d %b %Y · UTC")
+    days = [
+        day
+        for week in calendar["weeks"]
+        for day in week["contributionDays"]
+    ]
+    current_streak = 0
+    for day in reversed(days):
+        if day["contributionCount"] == 0:
+            break
+        current_streak += 1
+    longest_streak = 0
+    streak = 0
+    for day in days:
+        streak = streak + 1 if day["contributionCount"] > 0 else 0
+        longest_streak = max(longest_streak, streak)
     body = (
-        f'<text x="480" y="137" text-anchor="middle" font-size="58" fill="#58a6ff" font-weight="700">{all_time_total:,}</text>'
-        '<text x="480" y="164" text-anchor="middle" font-size="16" fill="#c9d1d9">Contributions since joining GitHub</text>'
-        f'<text x="480" y="190" text-anchor="middle" font-size="14" fill="#8b949e">GitHub member since {member_since}</text>'
+        '<line x1="320" y1="82" x2="320" y2="225" stroke="#30363d"/>'
+        '<line x1="640" y1="82" x2="640" y2="225" stroke="#30363d"/>'
+        f'<text x="160" y="139" text-anchor="middle" font-size="42" fill="#58a6ff" font-weight="700">{all_time_total:,}</text>'
+        '<text x="160" y="168" text-anchor="middle" font-size="14" fill="#c9d1d9">Total contributions</text>'
+        f'<text x="160" y="194" text-anchor="middle" font-size="12" fill="#8b949e">Since {member_since}</text>'
+        '<circle cx="480" cy="135" r="42" fill="none" stroke="#8b949e" stroke-width="5"/>'
+        '<text x="480" y="111" text-anchor="middle" font-size="22" fill="#f0f6fc">🔥</text>'
+        f'<text x="480" y="148" text-anchor="middle" font-size="27" fill="#f0f6fc" font-weight="700">{current_streak}</text>'
+        '<text x="480" y="177" text-anchor="middle" font-size="14" fill="#c9d1d9">Current streak</text>'
+        f'<text x="480" y="201" text-anchor="middle" font-size="12" fill="#8b949e">{now.strftime("%b %d").replace(" 0", " ")}</text>'
+        f'<text x="800" y="139" text-anchor="middle" font-size="42" fill="#58a6ff" font-weight="700">{longest_streak}</text>'
+        '<text x="800" y="168" text-anchor="middle" font-size="14" fill="#c9d1d9">Longest streak</text>'
+        '<text x="800" y="194" text-anchor="middle" font-size="12" fill="#8b949e">All time</text>'
     )
-    stats = card("GitHub contributions", 211, body, f"@{USERNAME} · Updated {stamp}")
+    stats = card("GitHub Stats", 250, body, f"@{USERNAME} · Updated {stamp}")
 
     languages = Counter()
     for repo in repos:
@@ -127,7 +152,7 @@ def generate():
     for i, fill in enumerate(["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]):
         body += f'<rect x="{776+i*18}" y="246" width="13" height="13" rx="3" fill="{fill}"/>'
     body += text(873, 256, "More", 11)
-    activity = card("A year of building", 282, body, f"GitHub contribution calendar · Updated {stamp}")
+    activity = card("GitHub Activity", 282, body, f"GitHub contribution calendar · Updated {stamp}")
     ASSETS.mkdir(exist_ok=True)
     # Fetch all data successfully before replacing any existing card.
     cards = [("stats.svg", stats), ("languages.svg", language_svg), ("activity.svg", activity)]
