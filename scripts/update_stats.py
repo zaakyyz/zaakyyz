@@ -5,7 +5,7 @@ import os
 import re
 import subprocess
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 from html import escape
 from pathlib import Path
@@ -60,13 +60,27 @@ def generate():
             break
         page += 1
     query = """query($login:String!){user(login:$login){contributionsCollection{
+      contributionYears
       contributionCalendar{totalContributions weeks{contributionDays{date contributionCount weekday}}}
     }}}"""
-    calendar = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-    stamp = datetime.now(timezone.utc).strftime("%d %b %Y · UTC")
+    collection = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]
+    calendar = collection["contributionCalendar"]
+    now = datetime.now(timezone.utc)
+    yearly_query = """query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){
+      contributionsCollection(from:$from,to:$to){contributionCalendar{totalContributions}}
+    }}"""
+    all_time_total = 0
+    for year in collection["contributionYears"]:
+        start = datetime(year, 1, 1, tzinfo=timezone.utc)
+        end = min(now, datetime(year + 1, 1, 1, tzinfo=timezone.utc) - timedelta(seconds=1))
+        yearly = api("graphql", {"query": yearly_query, "variables": {
+            "login": USERNAME, "from": start.isoformat(), "to": end.isoformat(),
+        }})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+        all_time_total += yearly["totalContributions"]
+    stamp = now.strftime("%d %b %Y · UTC")
     body = (
-        f'<text x="480" y="137" text-anchor="middle" font-size="58" fill="#58a6ff" font-weight="700">{calendar["totalContributions"]:,}</text>'
-        '<text x="480" y="164" text-anchor="middle" font-size="16" fill="#c9d1d9">Contributions in the last year</text>'
+        f'<text x="480" y="137" text-anchor="middle" font-size="58" fill="#58a6ff" font-weight="700">{all_time_total:,}</text>'
+        '<text x="480" y="164" text-anchor="middle" font-size="16" fill="#c9d1d9">Contributions since joining GitHub</text>'
         f'<text x="480" y="190" text-anchor="middle" font-size="14" fill="#8b949e">GitHub member since {member_since}</text>'
     )
     stats = card("GitHub contributions", 211, body, f"@{USERNAME} · Updated {stamp}")

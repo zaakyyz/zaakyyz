@@ -18,8 +18,9 @@ The workflow uses the built-in `GITHUB_TOKEN`; no personal access token or extra
 secret is required. For a local refresh, authenticate with `gh auth login` and
 run `python scripts/update_stats.py`, or supply `GH_TOKEN` in the environment.
 
-The contribution card uses GitHub's last-year calendar total and account
-creation date. Language shares use GitHub's code byte counts from public,
+The contribution card sums GitHub's contribution calendar totals for every
+contribution year since account creation. The activity calendar still shows
+the last year. Language shares use GitHub's code byte counts from public,
 non-fork repositories, excluding this profile. The activity calendar uses
 GitHub's visible activity.
 Technology icons use skillicons.dev.
