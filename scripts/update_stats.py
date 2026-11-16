@@ -1,11 +1,11 @@
-"""Generate self-contained profile SVGs using GitHub APIs and Python's stdlib."""
+"""Generate the self-contained language and activity SVGs for the profile."""
 
 import json
 import os
 import re
 import subprocess
 from collections import Counter
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timezone
 from hashlib import sha256
 from html import escape
 from pathlib import Path
@@ -48,64 +48,7 @@ def card(title, height, body, subtitle):
     )
 
 
-def contribution_streaks(days, today):
-    """Return the current and longest runs of days with contributions."""
-    longest = (0, None, None)
-    run_start = previous = None
-    run_length = 0
-    for day in sorted(day for day, count in days.items() if count > 0 and day <= today):
-        if previous is None or day != previous + timedelta(days=1):
-            run_start = day
-            run_length = 0
-        run_length += 1
-        previous = day
-        if run_length > longest[0]:
-            longest = (run_length, run_start, day)
-
-    current = (run_length, run_start, previous) if previous in (today, today - timedelta(days=1)) else (0, None, None)
-    return current, longest
-
-
-def date_span(start, end):
-    if start is None:
-        return "No active streak"
-    if start == end:
-        return start.strftime("%d %b %Y")
-    if start.year == end.year:
-        return f"{start:%d %b} – {end:%d %b %Y}"
-    return f"{start:%d %b %Y} – {end:%d %b %Y}"
-
-
-def stats_card(total, member_since, current, longest, stamp):
-    current_count, current_start, current_end = current
-    longest_count, longest_start, longest_end = longest
-    body = (
-        '<rect x=".5" y=".5" width="959" height="224" rx="16" fill="#0d1117" stroke="#30363d"/>'
-        '<path d="M320 28v169M640 28v169" stroke="#30363d" stroke-width="1.5"/>'
-        f'<text x="160" y="82" text-anchor="middle" font-size="44" fill="#58a6ff" font-weight="700">{total:,}</text>'
-        '<text x="160" y="121" text-anchor="middle" font-size="17" fill="#f0f6fc">Total Contributions</text>'
-        f'<text x="160" y="155" text-anchor="middle" font-size="13" fill="#8b949e">{member_since} – Present</text>'
-        '<path d="M494 29 A49 49 0 1 1 466 29" fill="none" stroke="#6da3ff" stroke-width="5" stroke-linecap="round"/>'
-        '<path d="M480 17 C483 23 482 27 479 31 C483 29 485 26 485 23 C490 29 491 34 489 39 C487 44 483 46 479 45 C474 45 471 41 472 36 C473 32 476 30 477 26 C477 32 478 34 480 35 C478 28 479 22 480 17 Z" fill="#0d1117" stroke="#6da3ff" stroke-width="3.5" stroke-linejoin="round"/>'
-        '<path d="M480 35 C482 38 482 41 480 42 C478 42 477 40 479 37" fill="none" stroke="#6da3ff" stroke-width="1.7" stroke-linecap="round"/>'
-        f'<text x="480" y="89" text-anchor="middle" font-size="38" fill="#bd83e9" font-weight="700">{current_count}</text>'
-        '<text x="480" y="151" text-anchor="middle" font-size="17" fill="#f0f6fc" font-weight="600">Current Streak</text>'
-        f'<text x="480" y="180" text-anchor="middle" font-size="13" fill="#8b949e">{escape(date_span(current_start, current_end))}</text>'
-        f'<text x="800" y="82" text-anchor="middle" font-size="44" fill="#58a6ff" font-weight="700">{longest_count}</text>'
-        '<text x="800" y="121" text-anchor="middle" font-size="17" fill="#f0f6fc">Longest Streak</text>'
-        f'<text x="800" y="155" text-anchor="middle" font-size="13" fill="#8b949e">{escape(date_span(longest_start, longest_end))}</text>'
-    )
-    return (
-        '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="225" viewBox="0 0 960 225" role="img">'
-        '<title>GitHub contribution and streak statistics</title>'
-        f'<desc>Updated {escape(stamp)}. Total {total:,}; current streak {current_count} days; longest streak {longest_count} days.</desc>'
-        '<g font-family="Segoe UI,Arial,sans-serif">' + body + '</g></svg>\n'
-    )
-
-
 def generate():
-    user = api(f"users/{USERNAME}")
-    member_since = datetime.strptime(user["created_at"][:10], "%Y-%m-%d").strftime("%d %b %Y")
     repos = []
     page = 1
     while True:
@@ -114,35 +57,12 @@ def generate():
         if len(batch) < 100:
             break
         page += 1
+
     query = """query($login:String!){user(login:$login){contributionsCollection{
-      contributionYears
       contributionCalendar{totalContributions weeks{contributionDays{date contributionCount weekday}}}
     }}}"""
-    collection = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]
-    calendar = collection["contributionCalendar"]
-    now = datetime.now(timezone.utc)
-    yearly_query = """query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){
-      contributionsCollection(from:$from,to:$to){contributionCalendar{
-        totalContributions weeks{contributionDays{date contributionCount}}
-      }}
-    }}"""
-    all_time_total = 0
-    days = {}
-    for year in collection["contributionYears"]:
-        start = datetime(year, 1, 1, tzinfo=timezone.utc)
-        end = min(now, datetime(year + 1, 1, 1, tzinfo=timezone.utc) - timedelta(seconds=1))
-        yearly = api("graphql", {"query": yearly_query, "variables": {
-            "login": USERNAME, "from": start.isoformat(), "to": end.isoformat(),
-        }})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-        all_time_total += yearly["totalContributions"]
-        for week in yearly["weeks"]:
-            for day in week["contributionDays"]:
-                day_date = date.fromisoformat(day["date"])
-                if day_date.year == year and day_date <= now.date():
-                    days[day_date] = day["contributionCount"]
-    stamp = now.strftime("%d %b %Y · UTC")
-    current, longest = contribution_streaks(days, now.date())
-    stats = stats_card(all_time_total, member_since, current, longest, stamp)
+    calendar = api("graphql", {"query": query, "variables": {"login": USERNAME}})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+    stamp = datetime.now(timezone.utc).strftime("%d %b %Y · UTC")
 
     languages = Counter()
     for repo in repos:
@@ -187,9 +107,10 @@ def generate():
         body += f'<rect x="{776+i*18}" y="246" width="13" height="13" rx="3" fill="{fill}"/>'
     body += text(873, 256, "More", 11)
     activity = card("GitHub Activity", 282, body, f"GitHub contribution calendar · Updated {stamp}")
+
     ASSETS.mkdir(exist_ok=True)
     # Fetch all data successfully before replacing any existing card.
-    cards = [("streak-stats.svg", stats), ("languages.svg", language_svg), ("activity.svg", activity)]
+    cards = [("languages.svg", language_svg), ("activity.svg", activity)]
     for name, content in cards:
         (ASSETS / name).write_text(content, encoding="utf-8")
     readme_path = ASSETS.parent / "README.md"
@@ -202,7 +123,7 @@ def generate():
             raise RuntimeError(f"Expected one README image reference for {name}, found {matches}")
     if readme != readme_path.read_text(encoding="utf-8"):
         readme_path.write_text(readme, encoding="utf-8")
-    print(f"Updated 3 cards: {len(repos)} public original repos, {len(languages)} languages.")
+    print(f"Updated 2 cards: {len(repos)} public original repos, {len(languages)} languages.")
 
 
 if __name__ == "__main__":

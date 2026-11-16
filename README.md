@@ -23,10 +23,10 @@
 </p>
 
 
-## GitHub Stats
+<h2 align="center">📊 GitHub Stats</h2>
 
 <p align="center">
-  <img src="assets/streak-stats.svg?v=ee6edc8428ea" width="100%" alt="Total GitHub contributions, current streak, and longest streak" />
+  <img src="https://streak-stats.demolab.com?user=zaakyyz&amp;theme=github-dark-blue&amp;hide_border=true&amp;background=0D1117&amp;ring=6DA3FF&amp;fire=6DA3FF&amp;currStreakNum=BD83E9&amp;sideNums=58A6FF&amp;sideLabels=F0F6FC&amp;currStreakLabel=F0F6FC&amp;dates=8B949E" width="500" alt="Total GitHub contributions, current streak, and longest streak" />
 </p>
 <p align="center">
   <img src="assets/languages.svg?v=f4af02546017" width="100%" alt="Languages by code size across public, non-fork repositories" />
@@ -35,7 +35,7 @@
 ## GitHub Activity
 
 <p align="center">
-  <img src="assets/activity.svg?v=494bcb401072" width="100%" alt="GitHub contribution calendar over the last year" />
+  <img src="assets/activity.svg?v=e1fcf4a5fb2b" width="100%" alt="GitHub contribution calendar over the last year" />
 </p>
 
 ---
