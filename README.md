@@ -22,17 +22,7 @@
   <img src="https://skillicons.dev/icons?i=flutter,dart,laravel,php,mysql,ts,react,nextjs,python,opencv&amp;perline=10" alt="Flutter, Dart, Laravel, PHP, MySQL, TypeScript, React, Next.js, Python, OpenCV" />
 </p>
 
-## GitHub at a glance
 
-<p align="center">
-  <img src="assets/stats.svg?v=fe871c97f479" width="100%" alt="Total contributions since joining GitHub and account creation date" />
-</p>
-<p align="center">
-  <img src="assets/languages.svg?v=f4af02546017" width="100%" alt="Languages by code size across public, non-fork repositories" />
-</p>
-<p align="center">
-  <img src="assets/activity.svg?v=7081538f246b" width="100%" alt="GitHub contribution calendar over the last year" />
-</p>
 
 ---
 
