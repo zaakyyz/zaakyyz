@@ -19,6 +19,8 @@ secret is required. For a local refresh, authenticate with `gh auth login` and
 run `python scripts/update_stats.py`, or supply `GH_TOKEN` in the environment.
 
 The external GitHub Stats service supplies contribution and streak counts.
+The profile views badge uses komarev.com and counts page views, not unique
+visitors. It starts counting when added to the README.
 Language shares use GitHub's code byte counts from public, non-fork
 repositories, excluding this profile. GitHub displays its own contribution
 calendar below the profile README.
