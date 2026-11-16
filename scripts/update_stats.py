@@ -5,7 +5,7 @@ import os
 import re
 import subprocess
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
 from html import escape
 from pathlib import Path
@@ -48,6 +48,59 @@ def card(title, height, body, subtitle):
     )
 
 
+def contribution_streaks(days, today):
+    """Return the current and longest runs of days with contributions."""
+    longest = (0, None, None)
+    run_start = previous = None
+    run_length = 0
+    for day in sorted(day for day, count in days.items() if count > 0 and day <= today):
+        if previous is None or day != previous + timedelta(days=1):
+            run_start = day
+            run_length = 0
+        run_length += 1
+        previous = day
+        if run_length > longest[0]:
+            longest = (run_length, run_start, day)
+
+    current = (run_length, run_start, previous) if previous in (today, today - timedelta(days=1)) else (0, None, None)
+    return current, longest
+
+
+def date_span(start, end):
+    if start is None:
+        return "No active streak"
+    if start == end:
+        return start.strftime("%d %b %Y")
+    if start.year == end.year:
+        return f"{start:%d %b} – {end:%d %b %Y}"
+    return f"{start:%d %b %Y} – {end:%d %b %Y}"
+
+
+def stats_card(total, member_since, current, longest, stamp):
+    current_count, current_start, current_end = current
+    longest_count, longest_start, longest_end = longest
+    body = (
+        '<rect x=".5" y=".5" width="959" height="224" rx="16" fill="#0d1117" stroke="#30363d"/>'
+        '<path d="M320 28v169M640 28v169" stroke="#30363d" stroke-width="1.5"/>'
+        f'<text x="160" y="82" text-anchor="middle" font-size="44" fill="#58a6ff" font-weight="700">{total:,}</text>'
+        '<text x="160" y="121" text-anchor="middle" font-size="17" fill="#f0f6fc">Total Contributions</text>'
+        f'<text x="160" y="155" text-anchor="middle" font-size="13" fill="#8b949e">{member_since} – Present</text>'
+        '<circle cx="480" cy="76" r="49" fill="none" stroke="#58a6ff" stroke-width="6"/>'
+        f'<text x="480" y="89" text-anchor="middle" font-size="38" fill="#f0f6fc" font-weight="700">{current_count}</text>'
+        '<text x="480" y="151" text-anchor="middle" font-size="17" fill="#f0f6fc" font-weight="600">Current Streak</text>'
+        f'<text x="480" y="180" text-anchor="middle" font-size="13" fill="#8b949e">{escape(date_span(current_start, current_end))}</text>'
+        f'<text x="800" y="82" text-anchor="middle" font-size="44" fill="#58a6ff" font-weight="700">{longest_count}</text>'
+        '<text x="800" y="121" text-anchor="middle" font-size="17" fill="#f0f6fc">Longest Streak</text>'
+        f'<text x="800" y="155" text-anchor="middle" font-size="13" fill="#8b949e">{escape(date_span(longest_start, longest_end))}</text>'
+    )
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="225" viewBox="0 0 960 225" role="img">'
+        '<title>GitHub contribution and streak statistics</title>'
+        f'<desc>Updated {escape(stamp)}. Total {total:,}; current streak {current_count} days; longest streak {longest_count} days.</desc>'
+        '<g font-family="Segoe UI,Arial,sans-serif">' + body + '</g></svg>\n'
+    )
+
+
 def generate():
     user = api(f"users/{USERNAME}")
     member_since = datetime.strptime(user["created_at"][:10], "%Y-%m-%d").strftime("%d %b %Y")
@@ -67,9 +120,12 @@ def generate():
     calendar = collection["contributionCalendar"]
     now = datetime.now(timezone.utc)
     yearly_query = """query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){
-      contributionsCollection(from:$from,to:$to){contributionCalendar{totalContributions}}
+      contributionsCollection(from:$from,to:$to){contributionCalendar{
+        totalContributions weeks{contributionDays{date contributionCount}}
+      }}
     }}"""
     all_time_total = 0
+    days = {}
     for year in collection["contributionYears"]:
         start = datetime(year, 1, 1, tzinfo=timezone.utc)
         end = min(now, datetime(year + 1, 1, 1, tzinfo=timezone.utc) - timedelta(seconds=1))
@@ -77,38 +133,14 @@ def generate():
             "login": USERNAME, "from": start.isoformat(), "to": end.isoformat(),
         }})["data"]["user"]["contributionsCollection"]["contributionCalendar"]
         all_time_total += yearly["totalContributions"]
+        for week in yearly["weeks"]:
+            for day in week["contributionDays"]:
+                day_date = date.fromisoformat(day["date"])
+                if day_date.year == year and day_date <= now.date():
+                    days[day_date] = day["contributionCount"]
     stamp = now.strftime("%d %b %Y · UTC")
-    days = [
-        day
-        for week in calendar["weeks"]
-        for day in week["contributionDays"]
-    ]
-    current_streak = 0
-    for day in reversed(days):
-        if day["contributionCount"] == 0:
-            break
-        current_streak += 1
-    longest_streak = 0
-    streak = 0
-    for day in days:
-        streak = streak + 1 if day["contributionCount"] > 0 else 0
-        longest_streak = max(longest_streak, streak)
-    body = (
-        '<line x1="320" y1="82" x2="320" y2="225" stroke="#30363d"/>'
-        '<line x1="640" y1="82" x2="640" y2="225" stroke="#30363d"/>'
-        f'<text x="160" y="139" text-anchor="middle" font-size="42" fill="#58a6ff" font-weight="700">{all_time_total:,}</text>'
-        '<text x="160" y="168" text-anchor="middle" font-size="14" fill="#c9d1d9">Total contributions</text>'
-        f'<text x="160" y="194" text-anchor="middle" font-size="12" fill="#8b949e">Since {member_since}</text>'
-        '<circle cx="480" cy="135" r="42" fill="none" stroke="#8b949e" stroke-width="5"/>'
-        '<text x="480" y="111" text-anchor="middle" font-size="22" fill="#f0f6fc">🔥</text>'
-        f'<text x="480" y="148" text-anchor="middle" font-size="27" fill="#f0f6fc" font-weight="700">{current_streak}</text>'
-        '<text x="480" y="177" text-anchor="middle" font-size="14" fill="#c9d1d9">Current streak</text>'
-        f'<text x="480" y="201" text-anchor="middle" font-size="12" fill="#8b949e">{now.strftime("%b %d").replace(" 0", " ")}</text>'
-        f'<text x="800" y="139" text-anchor="middle" font-size="42" fill="#58a6ff" font-weight="700">{longest_streak}</text>'
-        '<text x="800" y="168" text-anchor="middle" font-size="14" fill="#c9d1d9">Longest streak</text>'
-        '<text x="800" y="194" text-anchor="middle" font-size="12" fill="#8b949e">All time</text>'
-    )
-    stats = card("GitHub Stats", 250, body, f"@{USERNAME} · Updated {stamp}")
+    current, longest = contribution_streaks(days, now.date())
+    stats = stats_card(all_time_total, member_since, current, longest, stamp)
 
     languages = Counter()
     for repo in repos:
@@ -155,7 +187,7 @@ def generate():
     activity = card("GitHub Activity", 282, body, f"GitHub contribution calendar · Updated {stamp}")
     ASSETS.mkdir(exist_ok=True)
     # Fetch all data successfully before replacing any existing card.
-    cards = [("stats.svg", stats), ("languages.svg", language_svg), ("activity.svg", activity)]
+    cards = [("streak-stats.svg", stats), ("languages.svg", language_svg), ("activity.svg", activity)]
     for name, content in cards:
         (ASSETS / name).write_text(content, encoding="utf-8")
     readme_path = ASSETS.parent / "README.md"
